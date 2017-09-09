@@ -5,7 +5,7 @@ function init() {
 
 
     scene = new Physijs.Scene();
-    scene.fog = new THREE.Fog(0xffffff, 1, 500);
+    scene.fog = new THREE.FogExp2(0xaabbbb, 0.001);
     scene.setGravity(new THREE.Vector3(0, -30, 0));
 
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT_RATIO, NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
@@ -21,10 +21,14 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     window.addEventListener('resize', onResize, false);
-    document.body.appendChild( renderer.domElement );
+    document.body.appendChild(renderer.domElement);
 
     addLights();
     addGround();
+    addSkyBox();
+
+    var axisHelper = new THREE.AxisHelper(5);
+    scene.add(axisHelper);
 
     requestAnimationFrame(render);
 }
@@ -43,7 +47,7 @@ function onResize() {
 
 function addLights() {
     dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(-7, -5, 8);
+    dirLight.position.set(-7, 5, 8);
     dirLight.castShadow = true; // expensive
     dirLight.shadow.camera.near = 4;
     dirLight.shadow.camera.far = 20;
@@ -71,8 +75,8 @@ function addGround() {
 
     loader.load('img/grass.png', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.offset.set(0,0);
-        texture.repeat.set(6*50,6*50);
+        texture.offset.set(0, 0);
+        texture.repeat.set(6 * 50, 6 * 50);
 
         var ground_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({
@@ -82,12 +86,36 @@ function addGround() {
             .4 // low
         );
 
-        ground = new Physijs.PlaneMesh(
-            new THREE.PlaneGeometry(2500, 2500, 1),
+        ground = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(2500, 1, 2500),
             ground_material,
             0
         );
         ground.receiveShadow = true;
         scene.add(ground);
     });
+}
+
+function addSkyBox() {
+
+    function createMaterial(path) {
+        var texture = THREE.ImageUtils.loadTexture(path);
+        var material = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5, fog: false});
+
+        return material;
+    }
+
+    var materials = [
+        createMaterial('img/skybox/px.png'),
+        createMaterial('img/skybox/nx.png'),
+        createMaterial('img/skybox/py.png'),
+        createMaterial('img/skybox/ny.png'),
+        createMaterial('img/skybox/pz.png'),
+        createMaterial('img/skybox/nz.png')
+    ];
+
+    var mesh = new THREE.Mesh(new THREE.BoxGeometry(10000, 10000, 10000), new THREE.MeshFaceMaterial(materials));
+
+    mesh.scale.set(-1, 1, 1);
+    scene.add(mesh);
 }

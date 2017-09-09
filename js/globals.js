@@ -6,12 +6,12 @@ const DEBUG = false;
 const VIEW_ANGLE = 45;
 const ASPECT_RATIO = window.innerWidth / window.innerHeight;
 const NEAR_CLIPPING_PLANE = 0.1;
-const FAR_CLIPPING_PLANE = 1000;
+const FAR_CLIPPING_PLANE = 3000000;
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 const CAMERA_X = 0;
-const CAMERA_Y = -50;
-const CAMERA_Z = 25;
+const CAMERA_Y = 5;
+const CAMERA_Z = 40;
 
 // light brightness
 const INIT_DIR_LIGHT_BRIGHTNESS = 1;
