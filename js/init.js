@@ -5,6 +5,8 @@ function init() {
 
 
     scene = new Physijs.Scene();
+    scene.fog = new THREE.Fog(0xffffff, 1, 500);
+    scene.setGravity(new THREE.Vector3(0, -30, 0));
 
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT_RATIO, NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
     camera.position.set(CAMERA_X, CAMERA_Y, CAMERA_Z);
@@ -16,8 +18,13 @@ function init() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
 
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
     window.addEventListener('resize', onResize, false);
     document.body.appendChild( renderer.domElement );
+
+    addLights();
+    addGround();
 
     requestAnimationFrame(render);
 }
@@ -32,4 +39,55 @@ function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function addLights() {
+    dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(-7, -5, 8);
+    dirLight.castShadow = true; // expensive
+    dirLight.shadow.camera.near = 4;
+    dirLight.shadow.camera.far = 20;
+    dirLight.shadow.camera.left = -7;
+    dirLight.shadow.camera.right = 7;
+    dirLight.shadow.camera.top = 12;
+    dirLight.shadow.camera.bottom = -12;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    scene.add(dirLight);
+
+    hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+    hemiLight.color.setHSL(0.6, 1, 0.6);
+    hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+    hemiLight.position.set(0, 0, 10);
+    scene.add(hemiLight);
+
+    ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+    scene.add(ambientLight);
+}
+
+function addGround() {
+
+    var loader = new THREE.TextureLoader();
+
+    loader.load('img/grass.png', function (texture) {
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.offset.set(0,0);
+        texture.repeat.set(6*50,6*50);
+
+        var ground_material = Physijs.createMaterial(
+            new THREE.MeshLambertMaterial({
+                map: texture
+            }),
+            .8, // high friction
+            .4 // low
+        );
+
+        ground = new Physijs.PlaneMesh(
+            new THREE.PlaneGeometry(2500, 2500, 1),
+            ground_material,
+            0
+        );
+        ground.receiveShadow = true;
+        scene.add(ground);
+    });
 }

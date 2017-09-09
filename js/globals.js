@@ -10,9 +10,16 @@ const FAR_CLIPPING_PLANE = 1000;
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 const CAMERA_X = 0;
-const CAMERA_Y = -20;
-const CAMERA_Z = 10;
+const CAMERA_Y = -50;
+const CAMERA_Z = 25;
+
+// light brightness
+const INIT_DIR_LIGHT_BRIGHTNESS = 1;
+const INIT_HEMI_LIGHT_BRIGHTNESS = 0.6;
+const INIT_AMBIENT_LIGHT_BRIGHTNESS = 0.1;
 
 // GLOBALS //
 
 var renderer, scene, camera;
+var ground;
+var dirLight, hemiLight, ambientLight;
