@@ -1,8 +1,6 @@
 function handleInput() {
     if (controls.enabled) {
 
-        console.log(controls.getObject().position);
-
         raycaster.ray.origin.copy(controls.getObject().position);
         raycaster.ray.origin.y -= 10;
 
@@ -11,7 +9,7 @@ function handleInput() {
         var isOnObject = intersections.length > 0;
 
         var time = performance.now();
-        console.log("time " + time + "   prevTime " + prevTime);
+
         var delta = ( time - prevTime ) / 1000;
 
         velocity.x -= velocity.x * 10.0 * delta;
@@ -30,13 +28,16 @@ function handleInput() {
             canJump = false;
         }
 
+        if (Key.isDown(Key.F)) {
+            cannon.fire(1, 5, controls, camera, 500, 5000);
+        }
+
         if (isOnObject === true) {
             velocity.y = Math.max(0, velocity.y);
 
             canJump = true;
         }
 
-        console.log(velocity + "   " + delta);
         controls.getObject().translateX(velocity.x * delta);
         controls.getObject().translateY(velocity.y * delta);
         controls.getObject().translateZ(velocity.z * delta);

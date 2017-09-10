@@ -28,3 +28,5 @@ var dirLight, hemiLight, ambientLight;
 var controls, controlsEnabled;
 var prevTime, velocity = new THREE.Vector3(), raycaster;
 var objects = [];
+
+var cannon;

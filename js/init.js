@@ -5,7 +5,7 @@ function init() {
 
 
     scene = new Physijs.Scene();
-    scene.fog = new THREE.FogExp2(0xaabbbb, 0.001);
+    scene.fog = new THREE.FogExp2(0x999aaa, 0.0002);
     scene.setGravity(new THREE.Vector3(0, -50, 0));
 
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT_RATIO, NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
@@ -27,9 +27,7 @@ function init() {
     addLights();
     addGround();
     addSkyBox();
-    addCannon();
-
-    makeCannonBall(10);
+    readyCannon();
 
     var axisHelper = new THREE.AxisHelper(5);
     scene.add(axisHelper);
@@ -123,7 +121,7 @@ function addGround() {
     loader.load('img/grass.png', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.offset.set(0, 0);
-        texture.repeat.set(6 * 50, 6 * 50);
+        texture.repeat.set(6 * 500, 6 * 500);
 
         var ground_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({
@@ -134,7 +132,7 @@ function addGround() {
         );
 
         ground = new Physijs.BoxMesh(
-            new THREE.BoxGeometry(2500, 1, 2500),
+            new THREE.BoxGeometry(25000, 1, 25000),
             ground_material,
             0
         );
@@ -169,21 +167,6 @@ function addSkyBox() {
     scene.add(mesh);
 }
 
-function addCannon() {
-    var sGeometry = new THREE.SphereGeometry(1.25 ,32, 32);
-    var sMaterial = new THREE.MeshLambertMaterial({color: 0x00000});
-    var cannonBase = new THREE.Mesh(sGeometry, sMaterial);
-    cannonBase.position.set(0, -0.5, 0);
-    scene.add(cannonBase);
-
-
-
-    var cGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32, 32)
-    var cMaterial = new THREE.MeshLambertMaterial({color: 'lightgray'});
-    var cannon = new THREE.Mesh(cGeometry, cMaterial);
-    cannon.position.set(0,0.75,0);
-    cannon.rotation.z = Math.PI / 4;
-    cannon.rotation.y = - Math.PI / 4;
-
-    scene.add(cannon);
+function readyCannon() {
+    cannon = new Cannon(500);
 }
