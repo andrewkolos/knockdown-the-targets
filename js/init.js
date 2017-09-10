@@ -26,6 +26,7 @@ function init() {
     addLights();
     addGround();
     addSkyBox();
+    addCannon();
 
     var axisHelper = new THREE.AxisHelper(5);
     scene.add(axisHelper);
@@ -76,7 +77,7 @@ function addGround() {
     loader.load('img/grass.png', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.offset.set(0, 0);
-        texture.repeat.set(6 * 50, 6 * 50);
+        texture.repeat.set(6 * 150, 6 * 150);
 
         var ground_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({
@@ -92,6 +93,7 @@ function addGround() {
             0
         );
         ground.receiveShadow = true;
+        ground.position.set(0,-1,0);
         scene.add(ground);
     });
 }
@@ -118,4 +120,21 @@ function addSkyBox() {
 
     mesh.scale.set(-1, 1, 1);
     scene.add(mesh);
+}
+
+function addCannon() {
+    var sGeometry = new THREE.SphereGeometry(1.5 ,32, 32);
+    var sMaterial = new THREE.MeshLambertMaterial({color: 0x00000});
+    var cannonBase = new THREE.Mesh(sGeometry, sMaterial);
+    cannonBase.position.set(0, -0.5, 0);
+    scene.add(cannonBase);
+
+
+
+    var cGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32, 32)
+    var cMaterial = new THREE.MeshLambertMaterial({color: 'lightgray'});
+    var cannon = new THREE.Mesh(cGeometry, cMaterial);
+    cannon.position.set(0,1,0);
+
+    scene.add(cannon);
 }
