@@ -6,7 +6,7 @@ function init() {
 
     scene = new Physijs.Scene();
     scene.fog = new THREE.FogExp2(0x999aaa, 0.0002);
-    scene.setGravity(new THREE.Vector3(0, -50, 0));
+    scene.setGravity(new THREE.Vector3(0, -70, 0));
 
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT_RATIO, NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
     //camera.position.set(CAMERA_X, CAMERA_Y, CAMERA_Z);
@@ -17,6 +17,7 @@ function init() {
     renderer.setSize(WIDTH, HEIGHT);
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
+    renderer.shadowMapDarkness = 0.5;
 
     window.addEventListener('resize', onResize, false);
     document.body.appendChild(renderer.domElement);
@@ -27,6 +28,7 @@ function init() {
     addLights();
     addGround();
     addSkyBox();
+    addTargets();
     readyCannon();
 
     var axisHelper = new THREE.AxisHelper(5);
@@ -91,27 +93,31 @@ function addControls() {
 }
 
 function addLights() {
-    dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(-7, 5, 8);
+    dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(-7 * 20, 17 * 10, 8 * -20);
     dirLight.castShadow = true; // expensive
-    dirLight.shadow.camera.near = 4;
-    dirLight.shadow.camera.far = 20;
-    dirLight.shadow.camera.left = -7;
-    dirLight.shadow.camera.right = 7;
-    dirLight.shadow.camera.top = 12;
-    dirLight.shadow.camera.bottom = -12;
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.near = 2 * 20;
+    dirLight.shadow.camera.far = 30 * 20;
+    dirLight.shadow.camera.left = -10* 20;
+    dirLight.shadow.camera.right = 10* 20;
+    dirLight.shadow.camera.top = 10 * 20;
+    dirLight.shadow.camera.bottom = -10 * 20;
+    dirLight.shadow.mapSize.width = 1024 * 4;
+    dirLight.shadow.mapSize.height = 1024 * 4;
     scene.add(dirLight);
 
     hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
     hemiLight.color.setHSL(0.6, 1, 0.6);
     hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-    hemiLight.position.set(0, 0, 10);
+    hemiLight.position.set(0, 100, 0);
     scene.add(hemiLight);
 
     ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
+
+    scene.add(new THREE.DirectionalLightHelper(dirLight));
+    scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
+    scene.add(new THREE.HemisphereLightHelper(hemiLight));
 }
 
 function addGround() {
@@ -137,7 +143,7 @@ function addGround() {
             0
         );
         ground.receiveShadow = true;
-        ground.position.set(0,-1,0);
+        ground.position.set(0,-0.5,0);
         objects.push(ground);
         scene.add(ground);
     });
@@ -167,6 +173,18 @@ function addSkyBox() {
     scene.add(mesh);
 }
 
+function addTargets() {
+    addQuadTower(1, 1, new THREE.Vector3(-100, 0, -100));
+    addQuadTower(2, 5, new THREE.Vector3(100, 0, 100));
+    addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
+    addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
+    addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
+    addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
+    addQuadTower(6, 5, new THREE.Vector3(155, 0, 0));
+    addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));
+    addQuadTower(2, 3, new THREE.Vector3(0, 0, -100));
+}
+
 function readyCannon() {
-    cannon = new Cannon(500);
+    cannon = new Cannon(250);
 }

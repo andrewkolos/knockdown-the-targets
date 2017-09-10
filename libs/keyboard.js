@@ -1,11 +1,3 @@
-window.addEventListener('keyup', function (event) {
-    Key.onKeyup(event);
-}, false);
-window.addEventListener('keydown', function (event) {
-    Key.onKeydown(event);
-}, false);
-
-
 var Key = {
     _pressed: {},
 
@@ -46,6 +38,8 @@ var Key = {
     RIGHTARROW: 39,
     DOWNARROW: 40,
 
+    mouseDown: false,
+
     isDown: function (keyCode) {
         return this._pressed[keyCode];
     },
@@ -64,6 +58,10 @@ var Key = {
 
     onKeyup: function (event) {
         delete this._pressed[event.keyCode];
+    },
+
+    LmbDown: function() {
+        return this.mouseDown;
     }
 };
 
@@ -73,3 +71,15 @@ var Key = {
         alert("keydown: " + evt.keyCode);
     }, false);
 */
+window.addEventListener('keyup', function (event) {
+    Key.onKeyup(event);
+}, false);
+window.addEventListener('keydown', function (event) {
+    Key.onKeydown(event);
+}, false);
+window.addEventListener('mousedown', function (event) {
+    Key.mouseDown = true;
+});
+window.addEventListener('mouseup', function (event) {
+    Key.mouseDown = false;
+});

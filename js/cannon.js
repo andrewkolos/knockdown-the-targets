@@ -5,9 +5,11 @@ function Cannon(firingRate) {
     this.fire = function (radius, mass, controls,  camera, impulse, timeToLive) {
         function makeCannonBall(radius) {
             var geometry = new THREE.SphereGeometry(radius, 32, 32);
-            var material = Physijs.createMaterial(new THREE.MeshPhongMaterial({color: 0x040404, specular: 0x050505, shininess: 100}), 1, 1);
+            var material = Physijs.createMaterial(new THREE.MeshPhongMaterial({color: 0xFFF, specular: 0x050505, shininess: 100}), 1, 1);
 
             var mesh = new Physijs.SphereMesh(geometry, material, mass);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
             return mesh;
         }
 

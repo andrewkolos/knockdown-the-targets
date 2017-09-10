@@ -28,8 +28,8 @@ function handleInput() {
             canJump = false;
         }
 
-        if (Key.isDown(Key.F)) {
-            cannon.fire(1, 5, controls, camera, 500, 5000);
+        if (Key.LmbDown()) {
+            cannon.fire(1, 50, controls, camera, 10000, 5000);
         }
 
         if (isOnObject === true) {
@@ -42,10 +42,10 @@ function handleInput() {
         controls.getObject().translateY(velocity.y * delta);
         controls.getObject().translateZ(velocity.z * delta);
 
-        if (controls.getObject().position.y < 10) {
+        if (controls.getObject().position.y < 5) {
 
             velocity.y = 0;
-            controls.getObject().position.y = 10;
+            controls.getObject().position.y = 5;
 
             canJump = true;
 
