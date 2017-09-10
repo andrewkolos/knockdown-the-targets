@@ -6,11 +6,11 @@ function init() {
 
     scene = new Physijs.Scene();
     scene.fog = new THREE.FogExp2(0xaabbbb, 0.001);
-    scene.setGravity(new THREE.Vector3(0, -30, 0));
+    scene.setGravity(new THREE.Vector3(0, -50, 0));
 
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT_RATIO, NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
-    camera.position.set(CAMERA_X, CAMERA_Y, CAMERA_Z);
-    camera.lookAt(scene.position);
+    //camera.position.set(CAMERA_X, CAMERA_Y, CAMERA_Z);
+    //camera.lookAt(scene.position);
 
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setClearColor(0x000000, 1.0);
@@ -18,15 +18,18 @@ function init() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-
     window.addEventListener('resize', onResize, false);
     document.body.appendChild(renderer.domElement);
 
+    controls = new THREE.PointerLockControls(camera, renderer.domElement);
+
+    addControls();
     addLights();
     addGround();
     addSkyBox();
     addCannon();
+
+    makeCannonBall(10);
 
     var axisHelper = new THREE.AxisHelper(5);
     scene.add(axisHelper);
@@ -36,14 +39,57 @@ function init() {
 
 function render() {
     scene.simulate();
-    renderer.render(scene, camera);
+
+    handleInput();
+
     requestAnimationFrame(render);
+    renderer.render(scene, camera);
 }
 
 function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function addControls() {
+    prevTime = performance.now();
+    // raycaster used to detect downward collision
+    raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1,0), 0, 10);
+
+    // html5rocks.com/en/tutorials/pointerLock/intro
+    var havePointerLock = 'pointerLockElement' in document ||
+        'mozPointerLockElement' in document ||
+        'webkitPointerLockElement' in document; // browser supports pointer lock
+
+    if (havePointerLock) {
+        var body = document.body;
+        var pointerlockchange = function (event) {
+            if ( document.pointerLockElement === body || document.mozPointerLockElement === body || document.webkitPointerLockElement === body ) {
+                controls.enabled = true;
+                // blocker.style.display = 'none'
+            } else {
+                controls.enabled = false;
+            }
+        };
+
+        // hooks
+        document.addEventListener('pointerlockchange', pointerlockchange, false);
+        document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+        document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+        // errors
+
+        body.addEventListener('click', function (event) {
+            body.requestPointerLock = body.requestPointerLock || body.mozRequestPointerLock || body.webkitRequestPointerLock;
+            body.requestPointerLock();
+        }, false);
+
+
+        controls = new THREE.PointerLockControls(camera);
+        scene.add(controls.getObject());
+    } else {
+        alert("Your browser appears to not support the Pointer Lock API!");
+    }
 }
 
 function addLights() {
@@ -77,7 +123,7 @@ function addGround() {
     loader.load('img/grass.png', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.offset.set(0, 0);
-        texture.repeat.set(6 * 150, 6 * 150);
+        texture.repeat.set(6 * 50, 6 * 50);
 
         var ground_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({
@@ -94,6 +140,7 @@ function addGround() {
         );
         ground.receiveShadow = true;
         ground.position.set(0,-1,0);
+        objects.push(ground);
         scene.add(ground);
     });
 }
@@ -123,7 +170,7 @@ function addSkyBox() {
 }
 
 function addCannon() {
-    var sGeometry = new THREE.SphereGeometry(1.5 ,32, 32);
+    var sGeometry = new THREE.SphereGeometry(1.25 ,32, 32);
     var sMaterial = new THREE.MeshLambertMaterial({color: 0x00000});
     var cannonBase = new THREE.Mesh(sGeometry, sMaterial);
     cannonBase.position.set(0, -0.5, 0);
@@ -134,7 +181,9 @@ function addCannon() {
     var cGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32, 32)
     var cMaterial = new THREE.MeshLambertMaterial({color: 'lightgray'});
     var cannon = new THREE.Mesh(cGeometry, cMaterial);
-    cannon.position.set(0,1,0);
+    cannon.position.set(0,0.75,0);
+    cannon.rotation.z = Math.PI / 4;
+    cannon.rotation.y = - Math.PI / 4;
 
     scene.add(cannon);
 }

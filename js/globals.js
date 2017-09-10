@@ -23,3 +23,8 @@ const INIT_AMBIENT_LIGHT_BRIGHTNESS = 0.1;
 var renderer, scene, camera;
 var ground;
 var dirLight, hemiLight, ambientLight;
+
+// controls
+var controls, controlsEnabled;
+var prevTime, velocity = new THREE.Vector3(), raycaster;
+var objects = [];
