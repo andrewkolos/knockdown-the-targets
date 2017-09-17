@@ -32,6 +32,7 @@ function init() {
     readyCannon();
 
     var axisHelper = new THREE.AxisHelper(5);
+    axisHelper.position.set(0, 3, 0);
     scene.add(axisHelper);
 
     requestAnimationFrame(render);
@@ -182,7 +183,10 @@ function addTargets() {
     addQuadTower(1.5, 3, new THREE.Vector3(80, 0, 30));
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
     addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
+    addQuadTower(2, 3, new THREE.Vector3(-75, 0, 75));
+    addQuadTower(2, 3, new THREE.Vector3(-200, 0, 50));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
+    addQuadTower(3, 3, new THREE.Vector3(-200, 0, -100));
     addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
     addQuadTower(6, 8, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));

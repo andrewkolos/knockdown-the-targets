@@ -29,7 +29,7 @@ function handleInput() {
         }
 
         if (Key.LmbDown()) {
-            cannon.fire(1, 50, controls, camera, 10000, 5000);
+            cannon.fire(1, 75, controls, camera, 15000, 10000);
         }
 
         if (isOnObject === true) {
