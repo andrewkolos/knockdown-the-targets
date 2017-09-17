@@ -15,7 +15,7 @@ function handleInput() {
         velocity.x -= velocity.x * 10.0 * delta;
         velocity.z -= velocity.z * 10.0 * delta;
 
-        velocity.y -= 9.8 * 50.0 * delta; // 100.0 = mass
+        velocity.y -= 9.8 * 50.0 * delta;
 
         if (Key.isDown(Key.W)) velocity.z -= 600.0 * delta;
         if (Key.isDown(Key.S)) velocity.z += 600.0 * delta;
@@ -24,7 +24,7 @@ function handleInput() {
         if (Key.isDown(Key.D)) velocity.x += 600.0 * delta;
 
         if (Key.isDown(Key.SPACE)) {
-            if (canJump) velocity.y += 90;
+            if (canJump) velocity.y += 80;
             canJump = false;
         }
 

@@ -87,6 +87,7 @@ function addControls() {
 
         controls = new THREE.PointerLockControls(camera);
         scene.add(controls.getObject());
+        controls.getObject().position.y = 5;
     } else {
         alert("Your browser appears to not support the Pointer Lock API!");
     }
@@ -102,8 +103,8 @@ function addLights() {
     dirLight.shadow.camera.right = 10* 20;
     dirLight.shadow.camera.top = 10 * 20;
     dirLight.shadow.camera.bottom = -10 * 20;
-    dirLight.shadow.mapSize.width = 1024 * 4;
-    dirLight.shadow.mapSize.height = 1024 * 4;
+    dirLight.shadow.mapSize.width = 1024 * 20;
+    dirLight.shadow.mapSize.height = 1024 * 20;
     scene.add(dirLight);
 
     hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
@@ -143,7 +144,7 @@ function addGround() {
             0
         );
         ground.receiveShadow = true;
-        ground.position.set(0,-0.5,0);
+        ground.position.set(0,0,0);
         objects.push(ground);
         scene.add(ground);
     });
