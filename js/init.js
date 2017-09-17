@@ -87,7 +87,7 @@ function addControls() {
 
         controls = new THREE.PointerLockControls(camera);
         scene.add(controls.getObject());
-        controls.getObject().position.y = 5;
+        controls.getObject().position.y = 10;
     } else {
         alert("Your browser appears to not support the Pointer Lock API!");
     }
@@ -176,12 +176,15 @@ function addSkyBox() {
 
 function addTargets() {
     addQuadTower(1, 1, new THREE.Vector3(-100, 0, -100));
-    addQuadTower(2, 5, new THREE.Vector3(100, 0, 100));
+    addQuadTower(3.5, 7, new THREE.Vector3(150, 0, 100));
+    addQuadTower(2, 2, new THREE.Vector3(35, 0, -35));
+    addQuadTower(1, 3, new THREE.Vector3(40, 0, -80));
+    addQuadTower(1.5, 3, new THREE.Vector3(80, 0, 30));
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
     addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
     addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
-    addQuadTower(6, 5, new THREE.Vector3(155, 0, 0));
+    addQuadTower(6, 8, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));
     addQuadTower(2, 3, new THREE.Vector3(0, 0, -100));
 }
