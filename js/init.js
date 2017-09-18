@@ -4,7 +4,7 @@ function init() {
     Physijs.scripts.ammo = './ammo.js';
 
 
-    scene = new Physijs.Scene();
+    scene = new Physijs.Scene({reportsize: 300});
     scene.fog = new THREE.FogExp2(0x999aaa, 0.0002);
     scene.setGravity(new THREE.Vector3(0, -70, 0));
 
@@ -146,6 +146,7 @@ function addGround() {
         );
         ground.receiveShadow = true;
         ground.position.set(0,0,0);
+        ground.name = 'ground';
         objects.push(ground);
         scene.add(ground);
     });

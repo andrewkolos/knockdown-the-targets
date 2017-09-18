@@ -30,3 +30,20 @@ var prevTime, velocity = new THREE.Vector3(), raycaster;
 var objects = [];
 
 var cannon;
+
+// beach balls that have not touched the ground
+var activeTargets = [];
+
+
+var ballChannels = [];
+var cball = 0;
+for (var i = 0; i < 5; i++) {
+    ballChannels.push(new Audio('sound/ball.mp3'));
+}
+function playBallSound() {
+    ballChannels[cball].volume = 0.2;
+    ballChannels[cball++].play();
+    if (cball === 5) cball = 0;
+}
+
+

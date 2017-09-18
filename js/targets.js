@@ -1,3 +1,8 @@
+var beachballTexture;
+(new THREE.TextureLoader()).load('img/beachball.jpg', function (texture) {
+    beachballTexture = texture;
+});
+
 function addQuadTower(scale, pieceCount, pos) {
     var width = 4 * scale;
     var height = 12 * scale;
@@ -30,18 +35,38 @@ function addQuadTower(scale, pieceCount, pos) {
                         rmesh.position.set(pos.x - (5 * scale), pos.y + (pc * height) + height / 2, pos.z);
                         break;
                 }
+
                 scene.add(rmesh);
             }
         }
     });
 
-    (new THREE.TextureLoader()).load('img/beachball.jpg', function(texture) {
-       var ballMesh = createBeachBall(6*scale, texture);
-        ballMesh.position.set(pos.x, pos.y + pieceCount * height + (6*scale), pos.z);
+
+        var ballMesh = createBeachBall(6 * scale, beachballTexture);
+        ballMesh.position.set(pos.x, pos.y + pieceCount * height + (6 * scale), pos.z);
         ballMesh.castShadow = true;
         ballMesh.receiveShadow = true;
+        ballMesh.setCcdMotionThreshold(1);
+        ballMesh.addEventListener('collision', function (other_object) {
+            if (other_object.name === 'ground' || other_object.name === 'cannonball') {
+                console.log('beachball collided with ground');
+                if (activeTargets.indexOf(ballMesh) > -1) {
+                    setTimeout(function () {
+                        if (activeTargets.indexOf(ballMesh) > -1) { // make sure object still exists
+                            activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
+                            scene.remove(ballMesh);
+                        }
+                    }, 5000);
+                }
+            }
+            if (other_object.name === 'beachball') {
+
+            }
+
+        });
         scene.add(ballMesh);
-    });
+        activeTargets.push(ballMesh);
+
 }
 
 function createBeachBall(radius, texture) {
