@@ -29,7 +29,13 @@ function handleInput() {
         }
 
         if (Key.LmbDown()) {
-            cannon.fire(1, 75, controls, camera, 15000, 10000);
+            if (blueAmmo > 0)
+                cannon1.fire(controls, camera, 15000, 10000);
+        }
+
+        if (Key.RmbDown()) {
+            if (orangeAmmo > 0)
+                cannon2.fire(controls, camera, 30000, 10000);
         }
 
         if (isOnObject === true) {
@@ -52,11 +58,13 @@ function handleInput() {
         }
 
 
-
         prevTime = time;
     }
 }
 
 function updateGui() {
-
+    $('#time').html(timeRemaining);
+    $('#blue-ammo').html('' + blueAmmo);
+    $('#orange-ammo').html('' + orangeAmmo);
+    $('#targets').html(activeTargets.length);
 }

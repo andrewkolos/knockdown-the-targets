@@ -45,14 +45,9 @@ function addQuadTower(scale, pieceCount, pos) {
         ballMesh.setCcdMotionThreshold(1);
         ballMesh.addEventListener('collision', function (other_object) {
             if (other_object.name === 'ground' || other_object.name === 'cannonball') {
-
-                if (activeTargets.indexOf(ballMesh) > -1) {
-                    setTimeout(function () {
-                        if (activeTargets.indexOf(ballMesh) > -1) { // make sure object still exists
-                            activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
-                            scene.remove(ballMesh);
-                        }
-                    }, 5000);
+                if (ballMesh.name !== "removed") {
+                    activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
+                    ballMesh.name = 'removed';
                 }
             }
             if (other_object.name === 'beachball') {

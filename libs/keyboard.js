@@ -38,7 +38,8 @@ var Key = {
     RIGHTARROW: 39,
     DOWNARROW: 40,
 
-    mouseDown: false,
+    lmbDown: false,
+    rmbDown: false,
 
     isDown: function (keyCode) {
         return this._pressed[keyCode];
@@ -61,7 +62,11 @@ var Key = {
     },
 
     LmbDown: function() {
-        return this.mouseDown;
+        return this.lmbDown;
+    },
+
+    RmbDown: function () {
+        return this.rmbDown;
     }
 };
 
@@ -82,4 +87,36 @@ window.addEventListener('mousedown', function (event) {
 });
 window.addEventListener('mouseup', function (event) {
     Key.mouseDown = false;
+});
+
+$(window).mousedown(function(event) {
+    switch (event.which) {
+        case 1:
+            Key.lmbDown = true;
+            break;
+        case 2:
+            alert('Middle Mouse button pressed.');
+            break;
+        case 3:
+            Key.rmbDown = true;
+            break;
+        default:
+            alert('You have a strange Mouse!');
+    }
+});
+
+$(window).mouseup(function(event) {
+    switch (event.which) {
+        case 1:
+            Key.lmbDown = false;
+            break;
+        case 2:
+            alert('Middle Mouse button pressed.');
+            break;
+        case 3:
+            Key.rmbDown = false;
+            break;
+        default:
+            alert('You have a strange Mouse!');
+    }
 });

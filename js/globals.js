@@ -11,14 +11,7 @@ const NEAR_CLIPPING_PLANE = 0.1;
 const FAR_CLIPPING_PLANE = 3000000;
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
-const CAMERA_X = 0;
-const CAMERA_Y = 5;
-const CAMERA_Z = 40;
 
-// light brightness
-const INIT_DIR_LIGHT_BRIGHTNESS = 1;
-const INIT_HEMI_LIGHT_BRIGHTNESS = 0.6;
-const INIT_AMBIENT_LIGHT_BRIGHTNESS = 0.1;
 
 // GLOBALS //
 
@@ -31,11 +24,15 @@ var controls, controlsEnabled;
 var prevTime, velocity = new THREE.Vector3(), raycaster;
 var objects = [];
 
-var cannon;
+var cannon1, cannon2;
 
 // beach balls that have not touched the ground
 var activeTargets = [];
 
+var blueAmmo = 50;
+var orangeAmmo = 10;
+
+var timeRemaining = 90;
 
 var ballChannels = [];
 var cball = 0;

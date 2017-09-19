@@ -1,11 +1,12 @@
-function Cannon(firingRate) {
+function Cannon(firingRate, radius, mass, color) {
     this.firingRate = firingRate;
     this.lastShot = performance.now() - firingRate;
-    this.fire = function (radius, mass, controls, camera, impulse, timeToLive) {
+    this.onFire = function() {};
+    this.fire = function (controls, camera, impulse, timeToLive) {
         function makeCannonBall(radius) {
             var geometry = new THREE.SphereGeometry(radius, 32, 32);
             var material = Physijs.createMaterial(new THREE.MeshPhongMaterial({
-                color: 0xFFF,
+                color: color,
                 specular: 0x050505,
                 shininess: 100
             }), 1, 1);
@@ -34,6 +35,7 @@ function Cannon(firingRate) {
             ball.applyCentralImpulse(projectileVector.multiplyScalar(impulse));
             playBallSound();
 
+            this.onFire();
             this.lastShot = performance.now();
 
             setTimeout(function () {

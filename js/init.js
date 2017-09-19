@@ -1,5 +1,4 @@
-
-/*function init() {
+function init() {
     (new THREE.TextureLoader()).load('img/beachball.jpg', function (texture) {
         beachballTexture = texture;
         (new THREE.FontLoader()).load('fonts/helvetiker_regular.typeface.json', function (loaded) {
@@ -7,8 +6,7 @@
             continueInit();
         });
     });
-}*/
-continueInit();
+}
 
 function continueInit() {
 
@@ -17,7 +15,7 @@ function continueInit() {
     Physijs.scripts.ammo = './ammo.js';
 
 
-    scene = new Physijs.Scene({reportsize: 300});
+    scene = new Physijs.Scene({reportsize: 1000});
     scene.fog = new THREE.FogExp2(0x999aaa, 0.0002);
     scene.setGravity(new THREE.Vector3(0, -70, 0));
 
@@ -44,6 +42,11 @@ function continueInit() {
     addSkyBox();
     addTargets();
     readyCannon();
+    var timer = new AdjustingInterval(function () {
+        timeRemaining--;
+        if (timeRemaining === 0) timer.stop()
+    }, 1000);
+    timer.start();
 
     var axisHelper = new THREE.AxisHelper(5);
     axisHelper.position.set(0, 3, 0);
@@ -71,7 +74,7 @@ function onResize() {
 function addControls() {
     prevTime = performance.now();
     // raycaster used to detect downward collision
-    raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1,0), 0, 10);
+    raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
     // html5rocks.com/en/tutorials/pointerLock/intro
     var havePointerLock = 'pointerLockElement' in document ||
@@ -81,7 +84,7 @@ function addControls() {
     if (havePointerLock) {
         var body = document.body;
         var pointerlockchange = function (event) {
-            if ( document.pointerLockElement === body || document.mozPointerLockElement === body || document.webkitPointerLockElement === body ) {
+            if (document.pointerLockElement === body || document.mozPointerLockElement === body || document.webkitPointerLockElement === body) {
                 controls.enabled = true;
                 // blocker.style.display = 'none'
             } else {
@@ -115,8 +118,8 @@ function addLights() {
     dirLight.castShadow = true; // expensive
     dirLight.shadow.camera.near = 2 * 20;
     dirLight.shadow.camera.far = 30 * 20;
-    dirLight.shadow.camera.left = -10* 20;
-    dirLight.shadow.camera.right = 10* 20;
+    dirLight.shadow.camera.left = -10 * 20;
+    dirLight.shadow.camera.right = 10 * 20;
     dirLight.shadow.camera.top = 10 * 20;
     dirLight.shadow.camera.bottom = -10 * 20;
     dirLight.shadow.mapSize.width = 1024 * 20;
@@ -160,7 +163,7 @@ function addGround() {
             0
         );
         ground.receiveShadow = true;
-        ground.position.set(0,0,0);
+        ground.position.set(0, 0, 0);
         ground.name = 'ground';
         objects.push(ground);
         scene.add(ground);
@@ -221,7 +224,7 @@ function addTargets() {
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
     addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
     addQuadTower(2, 3, new THREE.Vector3(-75, 0, 75));
-    addQuadTower(2, 3, new THREE.Vector3(155, 0, 0));
+    addQuadTower(2.1, 6, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 3, new THREE.Vector3(-200, 0, 50));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
     addQuadTower(3, 3, new THREE.Vector3(-200, 0, -100));
@@ -233,5 +236,12 @@ function addTargets() {
 }
 
 function readyCannon() {
-    cannon = new Cannon(250);
+    cannon1 = new Cannon(250, 1, 75, 0xFFF);
+    cannon1.onFire = function () {
+        blueAmmo--;
+    };
+    cannon2 = new Cannon(750, 2, 150, 0xFFA500);
+    cannon2.onFire = function () {
+        orangeAmmo--;
+    }
 }
