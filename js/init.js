@@ -1,4 +1,17 @@
-function init() {
+
+/*function init() {
+    (new THREE.TextureLoader()).load('img/beachball.jpg', function (texture) {
+        beachballTexture = texture;
+        (new THREE.FontLoader()).load('fonts/helvetiker_regular.typeface.json', function (loaded) {
+            font = loaded;
+            continueInit();
+        });
+    });
+}*/
+continueInit();
+
+function continueInit() {
+
 
     Physijs.scripts.worker = './libs/physijs_worker.js';
     Physijs.scripts.ammo = './ammo.js';
@@ -27,6 +40,7 @@ function init() {
     addControls();
     addLights();
     addGround();
+    addText();
     addSkyBox();
     addTargets();
     readyCannon();
@@ -42,6 +56,7 @@ function render() {
     scene.simulate();
 
     handleInput();
+    updateGui();
 
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -152,6 +167,27 @@ function addGround() {
     });
 }
 
+function addText() {
+    var textGeometry = new THREE.TextGeometry("Hi", {
+        font: font,
+        size: 50,
+        height: 0.25,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: .05,
+        bevelSize: .05 * 5,
+        bevelSegments: 32
+    });
+    var textMaterial = new THREE.MeshPhongMaterial({color: 'white'});
+    var textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    textMesh.castShadow = true;
+    textMesh.receiveShadow = true;
+    textMesh.position.set(-1000, 1000, -1000);
+    textMesh.lookAt(controls.getObject().position);
+    scene.add(textMesh);
+}
+
+
 function addSkyBox() {
 
     function createMaterial(path) {
@@ -185,10 +221,12 @@ function addTargets() {
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
     addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
     addQuadTower(2, 3, new THREE.Vector3(-75, 0, 75));
+    addQuadTower(2, 3, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 3, new THREE.Vector3(-200, 0, 50));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
     addQuadTower(3, 3, new THREE.Vector3(-200, 0, -100));
     addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
+    addQuadTower(2, 3, new THREE.Vector3(30, 0, 30));
     addQuadTower(6, 8, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));
     addQuadTower(2, 3, new THREE.Vector3(0, 0, -100));

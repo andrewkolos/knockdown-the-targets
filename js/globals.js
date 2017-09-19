@@ -1,4 +1,6 @@
 // CONSTANTS
+var beachballTexture;
+var font;
 
 const DEBUG = false;
 

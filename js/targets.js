@@ -1,7 +1,3 @@
-var beachballTexture;
-(new THREE.TextureLoader()).load('img/beachball.jpg', function (texture) {
-    beachballTexture = texture;
-});
 
 function addQuadTower(scale, pieceCount, pos) {
     var width = 4 * scale;
@@ -49,7 +45,7 @@ function addQuadTower(scale, pieceCount, pos) {
         ballMesh.setCcdMotionThreshold(1);
         ballMesh.addEventListener('collision', function (other_object) {
             if (other_object.name === 'ground' || other_object.name === 'cannonball') {
-                console.log('beachball collided with ground');
+
                 if (activeTargets.indexOf(ballMesh) > -1) {
                     setTimeout(function () {
                         if (activeTargets.indexOf(ballMesh) > -1) { // make sure object still exists

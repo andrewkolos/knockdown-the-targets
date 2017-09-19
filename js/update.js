@@ -56,3 +56,7 @@ function handleInput() {
         prevTime = time;
     }
 }
+
+function updateGui() {
+
+}
