@@ -35,7 +35,7 @@ function handleInput() {
 
         if (Key.RmbDown()) {
             if (orangeAmmo > 0)
-                cannon2.fire(controls, camera, 30000, 10000);
+                cannon2.fire(controls, camera, 45000, 10000);
         }
 
         if (isOnObject === true) {

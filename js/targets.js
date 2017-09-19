@@ -1,3 +1,4 @@
+var asbeb = [];
 
 function addQuadTower(scale, pieceCount, pos) {
     var width = 4 * scale;
@@ -33,30 +34,32 @@ function addQuadTower(scale, pieceCount, pos) {
                 }
 
                 scene.add(rmesh);
+                asbeb.push(rmesh);
             }
         }
     });
 
 
-        var ballMesh = createBeachBall(6 * scale, beachballTexture);
-        ballMesh.position.set(pos.x, pos.y + pieceCount * height + (6 * scale), pos.z);
-        ballMesh.castShadow = true;
-        ballMesh.receiveShadow = true;
-        ballMesh.setCcdMotionThreshold(1);
-        ballMesh.addEventListener('collision', function (other_object) {
-            if (other_object.name === 'ground' || other_object.name === 'cannonball') {
-                if (ballMesh.name !== "removed") {
-                    activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
-                    ballMesh.name = 'removed';
-                }
+    var ballMesh = createBeachBall(6 * scale, beachballTexture);
+    ballMesh.position.set(pos.x, pos.y + pieceCount * height + (6 * scale), pos.z);
+    ballMesh.castShadow = true;
+    ballMesh.receiveShadow = true;
+    ballMesh.setCcdMotionThreshold(1);
+    ballMesh.addEventListener('collision', function (other_object) {
+        if (other_object.name === 'ground' || other_object.name === 'cannonball') {
+            if (ballMesh.name !== "removed") {
+                activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
+                ballMesh.name = 'removed';
             }
-            if (other_object.name === 'beachball') {
+        }
+        if (other_object.name === 'beachball') {
 
-            }
+        }
 
-        });
-        scene.add(ballMesh);
-        activeTargets.push(ballMesh);
+    });
+    scene.add(ballMesh);
+    asbeb.push(ballMesh);
+    activeTargets.push(ballMesh);
 
 }
 
@@ -64,4 +67,12 @@ function createBeachBall(radius, texture) {
     var geometry = new THREE.SphereGeometry(radius, 32, 32);
     var material = new Physijs.createMaterial(new THREE.MeshPhongMaterial({map: texture}), 2, 1.5);
     return new Physijs.SphereMesh(geometry, material, 1);
+}
+
+function removeAllTargets() {
+    activeTargets = [];
+    asbeb.forEach(function (object) {
+        scene.remove(object)
+    });
+    asbeb = [];
 }

@@ -27,11 +27,7 @@ function Cannon(firingRate, radius, mass, color) {
 
             ball.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
             scene.add(ball);
-            // Enable CCD if the object moves more than 1 meter in one simulation frame
-           // ball.setCcdMotionThreshold(1);
-
-// Set the radius of the embedded sphere such that it is smaller than the object
-           // ball.setCcdSweptSphereRadius(0.2);
+            
             ball.applyCentralImpulse(projectileVector.multiplyScalar(impulse));
             playBallSound();
 

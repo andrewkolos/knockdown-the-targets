@@ -42,15 +42,30 @@ function continueInit() {
     addSkyBox();
     addTargets();
     readyCannon();
+    playMusic();
+
     var timer = new AdjustingInterval(function () {
-        timeRemaining--;
-        if (timeRemaining === 0) timer.stop()
+        if (timeRemaining > 0)
+            timeRemaining--;
+
     }, 1000);
     timer.start();
+
 
     var axisHelper = new THREE.AxisHelper(5);
     axisHelper.position.set(0, 3, 0);
     scene.add(axisHelper);
+
+    $(document).on('keypress', function (event) {
+        console.log(event.keyCode);
+        if (event.keyCode === 114) {
+            removeAllTargets();
+            addTargets();
+            timeRemaining = 90;
+            blueAmmo = 50;
+            orangeAmmo = 10;
+        }
+    });
 
     requestAnimationFrame(render);
 }
@@ -240,8 +255,22 @@ function readyCannon() {
     cannon1.onFire = function () {
         blueAmmo--;
     };
-    cannon2 = new Cannon(750, 2, 150, 0xFFA500);
+    cannon2 = new Cannon(750, 2, 225, 0xFFA500);
     cannon2.onFire = function () {
         orangeAmmo--;
     }
+}
+
+function playMusic() {
+    var soundTargetsStart = new Audio("sound/targets_start.mp3");
+    var soundTargetsLoop = new Audio("sound/targets_loop.mp3");
+    soundTargetsStart.volume = 0.2;
+    soundTargetsLoop.volume = 0.2;
+
+    soundTargetsLoop.loop = true;
+    soundTargetsStart.onended = function () {
+        soundTargetsLoop.currentTime = 0;
+        soundTargetsLoop.play();
+    };
+    soundTargetsStart.play();
 }
