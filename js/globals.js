@@ -5,7 +5,7 @@ var font;
 const DEBUG = false;
 
 // perspective camera
-const VIEW_ANGLE = 45;
+const VIEW_ANGLE = 60;
 const ASPECT_RATIO = window.innerWidth / window.innerHeight;
 const NEAR_CLIPPING_PLANE = 0.1;
 const FAR_CLIPPING_PLANE = 3000000;
@@ -29,10 +29,15 @@ var cannon1, cannon2;
 // beach balls that have not touched the ground
 var activeTargets = [];
 
-var blueAmmo = 50;
-var orangeAmmo = 10;
+var blueAmmo = 60;
+var orangeAmmo = 30;
 
-var timeRemaining = 90;
+var cheerSound = new Audio('sound/cheer.mp3');
+var scoreSound = new Audio('sound/player_score.mp3');
+
+var timer;
+
+var timeRemaining = 120;
 
 var ballChannels = [];
 var cball = 0;

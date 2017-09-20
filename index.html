@@ -19,6 +19,20 @@
             font-family: Arial;
         }
 
+        .message {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            width: 480px;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px 15px 15px 15px;
+            padding: 10px 10px 10px 10px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
         .hud {
             position: absolute;
             bottom: 0;
@@ -48,16 +62,70 @@
             margin-top: 10px;
             font-size: 2em;
         }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            padding: 20px;
+            color: white;
+
+            transform: translate(-50%, -50%);
+
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px 15px 0 0;
+        }
+        .modal .heading {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body onload="init()" style="margin: 0;">
+<div class="modal" id="modal">
+    <div class="heading">
+        How To Play
+    </div>
+    <div class="heading">
+        Left Click and Then Space to Start Playing
+    </div>
+    <div>
+        WASD to Move, SPACE to jump
+    </div>
+    <div>
+        H - Show this help menu
+    </div>
+    <div>
+        R - Reset the game
+    </div>
+    <div>
+        Left CLick - Shoot standard blue ammo
+    </div>
+    <div>
+        Right Click - Shoot heavier orange ammo
+    </div>
+    <div>
+        Move mouse to aim
+    </div>
+    <div class="heading" style="margin-top: 5px;">
+        Knock out all the targets before time expires!
+    </div>
+    <div>
+        Demo created by Andrew Kolos
+    </div>
+
+</div>
+<div class="message" id="message" style="display: none">
+    I am a very long message. Look at all this text!
+</div>
 <div class="hud">
     <div class="hud-block">
         <div class="header">
             Time
         </div>
         <div class="content" id="time">
-            joj
+            loading
         </div>
     </div>
     <div class="hud-block">
@@ -65,7 +133,7 @@
             Targets Left
         </div>
         <div class="content" id="targets">
-            joj
+            loading
         </div>
     </div>
     <div class="hud-block">

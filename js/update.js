@@ -26,6 +26,9 @@ function handleInput() {
         if (Key.isDown(Key.SPACE)) {
             if (canJump) velocity.y = 150;
             canJump = false;
+            $('#modal').css('display', 'none');
+            if (!timer.running)
+                timer.start();
         }
 
         if (Key.LmbDown()) {
@@ -36,6 +39,10 @@ function handleInput() {
         if (Key.RmbDown()) {
             if (orangeAmmo > 0)
                 cannon2.fire(controls, camera, 45000, 10000);
+        }
+
+        if (Key.isDown(Key.H)) {
+            $('#modal').css('display', 'block');
         }
 
         if (isOnObject === true) {
@@ -67,4 +74,24 @@ function updateGui() {
     $('#blue-ammo').html('' + blueAmmo);
     $('#orange-ammo').html('' + orangeAmmo);
     $('#targets').html(activeTargets.length);
+
+    var message = $('#message');
+    if (activeTargets.length > 0 && timeRemaining <= 0) {
+        message.html("Time's up! Press R to restart");
+        message.css("display", "block");
+    }
+
+    else if (activeTargets.length === 0 && timeRemaining > 0) {
+        message.html("Congratulations!");
+        cheerSound.play();
+        cheerSound.onended = function () {
+            cheerSound.volume = 0;
+        };
+        if (timer.running) {
+            timer.stop();
+        }
+        message.css("display", 'block');
+    } else {
+        message.css("display", "none");
+    }
 }

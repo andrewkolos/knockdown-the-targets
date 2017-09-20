@@ -15,6 +15,7 @@ function addQuadTower(scale, pieceCount, pos) {
 
                 var rmaterial = Physijs.createMaterial(new THREE.MeshPhongMaterial({map: texture}), .95, .95);
                 var rmesh = new Physijs.BoxMesh(rgeometry, rmaterial);
+                rmesh.mass = rmesh.mass / 2;
                 rmesh.castShadow = true;
                 rmesh.receiveShadow = true;
 
@@ -50,6 +51,8 @@ function addQuadTower(scale, pieceCount, pos) {
             if (ballMesh.name !== "removed") {
                 activeTargets.splice(activeTargets.indexOf(ballMesh), 1);
                 ballMesh.name = 'removed';
+                scoreSound.play();
+                scene.remove(ballMesh);
             }
         }
         if (other_object.name === 'beachball') {

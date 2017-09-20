@@ -13,13 +13,18 @@ function AdjustingInterval(workFunc, interval, errorFunc) {
     var that = this;
     var expected, timeout;
     this.interval = interval;
+    this.running = false;
 
     this.start = function() {
+        if (this.running)
+            this.stop();
+        this.running = true;
         expected = Date.now() + this.interval;
         timeout = setTimeout(step, this.interval);
     };
 
     this.stop = function() {
+        this.running = false;
         clearTimeout(timeout);
     };
 

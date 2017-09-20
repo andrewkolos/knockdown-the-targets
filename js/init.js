@@ -44,7 +44,7 @@ function continueInit() {
     readyCannon();
     playMusic();
 
-    var timer = new AdjustingInterval(function () {
+    timer = new AdjustingInterval(function () {
         if (timeRemaining > 0)
             timeRemaining--;
 
@@ -52,18 +52,25 @@ function continueInit() {
     timer.start();
 
 
-    var axisHelper = new THREE.AxisHelper(5);
-    axisHelper.position.set(0, 3, 0);
-    scene.add(axisHelper);
+    // var axisHelper = new THREE.AxisHelper(5);
+    // axisHelper.position.set(0, 3, 0);
+    // scene.add(axisHelper);
 
     $(document).on('keypress', function (event) {
         console.log(event.keyCode);
         if (event.keyCode === 114) {
             removeAllTargets();
             addTargets();
-            timeRemaining = 90;
-            blueAmmo = 50;
-            orangeAmmo = 10;
+            timeRemaining = 120;
+            blueAmmo = 60;
+            orangeAmmo = 30;
+            cheerSound.volume = 0.5;
+            controls.getObject().position.set(0,10,0);
+            if (!timer.running)
+                timer.start();
+        }
+        if (event.keycode === 104) {
+            $('#modal').css('display','block');
         }
     });
 
@@ -150,9 +157,9 @@ function addLights() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
 
-    scene.add(new THREE.DirectionalLightHelper(dirLight));
+    /*scene.add(new THREE.DirectionalLightHelper(dirLight));
     scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
-    scene.add(new THREE.HemisphereLightHelper(hemiLight));
+    scene.add(new THREE.HemisphereLightHelper(hemiLight));*/
 }
 
 function addGround() {
@@ -162,7 +169,7 @@ function addGround() {
     loader.load('img/grass.png', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.offset.set(0, 0);
-        texture.repeat.set(6 * 500, 6 * 500);
+        texture.repeat.set(6 * 200, 6 * 200);
 
         var ground_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({
@@ -173,7 +180,7 @@ function addGround() {
         );
 
         ground = new Physijs.BoxMesh(
-            new THREE.BoxGeometry(25000, 1, 25000),
+            new THREE.BoxGeometry(5000, 1, 5000),
             ground_material,
             0
         );
@@ -237,17 +244,20 @@ function addTargets() {
     addQuadTower(1, 3, new THREE.Vector3(40, 0, -80));
     addQuadTower(1.5, 3, new THREE.Vector3(80, 0, 30));
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
-    addQuadTower(4, 4, new THREE.Vector3(-200, 0, 150));
+    addQuadTower(4, 4, new THREE.Vector3(-100, 0, 150));
     addQuadTower(2, 3, new THREE.Vector3(-75, 0, 75));
     addQuadTower(2.1, 6, new THREE.Vector3(155, 0, 0));
-    addQuadTower(2, 3, new THREE.Vector3(-200, 0, 50));
+    addQuadTower(2, 3, new THREE.Vector3(-150, 0, 50));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
-    addQuadTower(3, 3, new THREE.Vector3(-200, 0, -100));
+    addQuadTower(3, 3, new THREE.Vector3(-100, 0, -100));
     addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
     addQuadTower(2, 3, new THREE.Vector3(30, 0, 30));
     addQuadTower(6, 8, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));
     addQuadTower(2, 3, new THREE.Vector3(0, 0, -100));
+    // addQuadTower(1, 1, new THREE.Vector3(-40, 0, 30));
+    // addQuadTower(1, 1, new THREE.Vector3(-70, 0, 10));
+    // addQuadTower(2, 3, new THREE.Vector3(70, 0, 100));
 }
 
 function readyCannon() {
