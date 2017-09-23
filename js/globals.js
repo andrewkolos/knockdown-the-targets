@@ -34,6 +34,7 @@ var orangeAmmo = 30;
 
 var cheerSound = new Audio('sound/cheer.mp3');
 var scoreSound = new Audio('sound/player_score.mp3');
+scoreSound.volume = 0.3;
 
 var timer;
 

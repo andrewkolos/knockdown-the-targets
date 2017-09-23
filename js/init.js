@@ -49,27 +49,30 @@ function continueInit() {
             timeRemaining--;
 
     }, 1000);
-    timer.start();
 
 
     // var axisHelper = new THREE.AxisHelper(5);
     // axisHelper.position.set(0, 3, 0);
     // scene.add(axisHelper);
 
-    $(document).on('keypress', function (event) {
+    $(document).on('keyup', function (event) {
         console.log(event.keyCode);
-        if (event.keyCode === 114) {
+        if (event.keyCode === 82 || event.keyCode === 84) {
             removeAllTargets();
             addTargets();
+            if(event.keyCode === 84)
+                for(var i = 0; i < 4; i++)
+                    addTargets();
             timeRemaining = 120;
             blueAmmo = 60;
             orangeAmmo = 30;
             cheerSound.volume = 0.5;
-            controls.getObject().position.set(0,10,0);
+            if (event.keyCode === 82)
+                controls.getObject().position.set(0,10,0);
             if (!timer.running)
                 timer.start();
         }
-        if (event.keycode === 104) {
+        if (event.keycode === 72) {
             $('#modal').css('display','block');
         }
     });
@@ -78,10 +81,9 @@ function continueInit() {
 }
 
 function render() {
-    scene.simulate();
-
     handleInput();
     updateGui();
+    removeOobTargets();
 
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -107,6 +109,8 @@ function addControls() {
         var body = document.body;
         var pointerlockchange = function (event) {
             if (document.pointerLockElement === body || document.mozPointerLockElement === body || document.webkitPointerLockElement === body) {
+                scene.onSimulationResume();
+                prevTime = performance.now();
                 controls.enabled = true;
                 // blocker.style.display = 'none'
             } else {
@@ -156,10 +160,6 @@ function addLights() {
 
     ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
-
-    /*scene.add(new THREE.DirectionalLightHelper(dirLight));
-    scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
-    scene.add(new THREE.HemisphereLightHelper(hemiLight));*/
 }
 
 function addGround() {
@@ -246,26 +246,23 @@ function addTargets() {
     addQuadTower(1.5, 3, new THREE.Vector3(-50, 0, -50));
     addQuadTower(4, 4, new THREE.Vector3(-100, 0, 150));
     addQuadTower(2, 3, new THREE.Vector3(-75, 0, 75));
-    addQuadTower(2.1, 6, new THREE.Vector3(155, 0, 0));
+    addQuadTower(1.5, 6, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 3, new THREE.Vector3(-150, 0, 50));
     addQuadTower(3, 2, new THREE.Vector3(-175, 0, 25));
     addQuadTower(3, 3, new THREE.Vector3(-100, 0, -100));
     addQuadTower(1, 2, new THREE.Vector3(-125, 0, 50));
     addQuadTower(2, 3, new THREE.Vector3(30, 0, 30));
-    addQuadTower(6, 8, new THREE.Vector3(155, 0, 0));
+    addQuadTower(4.5, 6, new THREE.Vector3(155, 0, 0));
     addQuadTower(2, 6, new THREE.Vector3(65, 0, 65));
     addQuadTower(2, 3, new THREE.Vector3(0, 0, -100));
-    // addQuadTower(1, 1, new THREE.Vector3(-40, 0, 30));
-    // addQuadTower(1, 1, new THREE.Vector3(-70, 0, 10));
-    // addQuadTower(2, 3, new THREE.Vector3(70, 0, 100));
 }
 
 function readyCannon() {
-    cannon1 = new Cannon(250, 1, 75, 0xFFF);
+    cannon1 = new Cannon(250, 1, 75, 0xFFF, true);
     cannon1.onFire = function () {
         blueAmmo--;
     };
-    cannon2 = new Cannon(750, 2, 225, 0xFFA500);
+    cannon2 = new Cannon(750, 2, 225, 0xFFA500, true);
     cannon2.onFire = function () {
         orangeAmmo--;
     }

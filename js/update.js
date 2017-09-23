@@ -1,5 +1,6 @@
 function handleInput() {
     if (controls.enabled) {
+        scene.simulate();
 
         raycaster.ray.origin.copy(controls.getObject().position);
         raycaster.ray.origin.y -= 10;
@@ -93,5 +94,19 @@ function updateGui() {
         message.css("display", 'block');
     } else {
         message.css("display", "none");
+    }
+}
+
+function removeOobTargets() {
+    for (var i = 0; i < activeTargets.length; i++) {
+        var tar = activeTargets[i];
+        if (tar.position.y > 500 || tar.position.y < -50) {
+            if (tar.name !== "removed") {
+                activeTargets.splice(i, 1);
+                tar.name = 'removed';
+                scoreSound.play();
+                scene.remove(tar);
+            }
+        }
     }
 }

@@ -80,6 +80,22 @@
             text-align: center;
             margin-bottom: 10px;
         }
+
+        .side {
+            position: fixed;
+            bottom: 0;
+            color: white;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 0 15px 0 0;
+        }
+
+        .side ul {
+            padding: 0;
+        }
+        .side li {
+            list-style: none;
+        }
     </style>
 </head>
 <body onload="init()" style="margin: 0;">
@@ -100,7 +116,10 @@
         R - Reset the game
     </div>
     <div>
-        Left CLick - Shoot standard blue ammo
+        T - Don't press this
+    </div>
+    <div>
+        Left Click - Shoot standard blue ammo
     </div>
     <div>
         Right Click - Shoot heavier orange ammo
@@ -118,6 +137,16 @@
 </div>
 <div class="message" id="message" style="display: none">
     I am a very long message. Look at all this text!
+</div>
+<div class="side">
+    <ul>
+        <li>WASD - Move</li>
+        <li>Space - Jump</li>
+        <li>Mouse to Aim</li>
+        <li>Mouse L/R - Shoot</li>
+        <li>R - Reset</li>
+        <li>T - Crash the game</li>
+    </ul>
 </div>
 <div class="hud">
     <div class="hud-block">
